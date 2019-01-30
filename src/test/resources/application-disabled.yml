@@ -1,0 +1,3 @@
+springify:
+  basicauth:
+    enabled: false

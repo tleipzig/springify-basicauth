@@ -1,0 +1,56 @@
+# Springify Basicauth image:https://travis-ci.org/tleipzig/springify-basicauth.svg?branch=master["Build Status",link="https://travis-ci.org/tleipzig/springify-basicauth"] image:https://maven-badges.herokuapp.com/maven-central/com.it-surmann/springify-basicauth/badge.svg["Maven Central",link="https://maven-badges.herokuapp.com/maven-central/com.it-surmann/springify-basicauth"] image:https://img.shields.io/badge/License-Apache%202.0-blue.svg["Licence",link="https://raw.githubusercontent.com/tleipzig/springify-basicauth/master/LICENSE"]
+
+**Springify Basicauth** protects a Spring Boot application with a configurable basic authentication. A simple
+filter is used for this task, so no dependency on Spring Security is needed or, in case it is present, the filter
+is not interferring with it.
+
+It's part of http://www.it-surmann.com/springify[**Springify**], a set of open source libraries supporting
+the development of multi module projects with Spring Boot.
+
+## Usage
+
+First add the dependency from the Maven Cenral Repository:
+
+[source,xml]
+----
+<dependency>
+  <groupId>com.it-surmann</groupId>
+  <artifactId>springify-basicauth</artifactId>
+  <version>1.0.0</version>
+</dependency>
+----
+
+Then extend the component scanning in your application class for `com.it_surmann.springify`, for example:
+
+[source,java]
+----
+@SpringBootApplication
+@ComponentScan(basePackages = {"my.own.package", "com.it_surmann.springify"})
+public class MyApplication {
+  // ...
+}
+----
+
+Lastly, specify the required username and password in your application properties, for example in application.yml:
+
+[source,yaml]
+----
+springify:
+  basicauth:
+    username: Visitor
+    password: Welcome
+----
+
+If the credentials shouldn't be part of the source code, they may be provided externally
+by https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html[Spring Boot means].
+A `RuntimeException` is thrown during startup if they are missing (and the filter is enabled).
+
+## Further Configuration
+
+The basic authentication can be disabled by setting `springify.basicauth.enabled` to `false` (defaults to `true`).
+The realm can be changed with `springify.basicauth.realm` (defaults to `Restricted`).
+
+The filter itself is getting a priority of `Ordered.HIGHEST_PRECEDENCE + 5`, so it's in front of Spring Security if
+present. This value can be adjusted with `springify.basicauth.order`.
+
+TIP: As properties can be adjusted per profile, this library may be used to protect certain environments like Staging.

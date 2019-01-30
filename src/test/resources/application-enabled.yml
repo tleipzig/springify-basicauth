@@ -1,0 +1,9 @@
+springify:
+  basicauth:
+    username: basicuser
+    password: basicpass
+logging:
+  level:
+    com:
+      it_surmann:
+        springify: DEBUG
