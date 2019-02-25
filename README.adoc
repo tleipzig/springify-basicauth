@@ -4,8 +4,8 @@
 filter is used for this task, so no dependency on Spring Security is needed or, in case it is present, the filter
 is not interferring with it.
 
-It's part of http://www.it-surmann.com/springify[**Springify**], a set of open source libraries supporting
-the development of multi module projects with Spring Boot.
+It's part of http://www.it-surmann.com/springify/[**Springify**], a set of open source libraries supporting
+the development of Spring Boot projects.
 
 ## Usage
 

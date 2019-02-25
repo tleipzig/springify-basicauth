@@ -89,7 +89,7 @@ public class BasicAuthFilter implements Filter {
 
     @SneakyThrows
     private void respond401(final HttpServletResponse httpServletResponse, final String errorMessage) {
-        log.debug("Couldn't authenticate request: " + errorMessage);
+        log.debug("Couldn't authenticate request: {}", errorMessage);
 
         httpServletResponse.setHeader("WWW-Authenticate", "Basic realm=\"" + basicRealm + "\"");
         httpServletResponse.sendError(401, errorMessage);

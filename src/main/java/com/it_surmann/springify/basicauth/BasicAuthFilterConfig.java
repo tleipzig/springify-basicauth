@@ -28,7 +28,7 @@ public class BasicAuthFilterConfig {
 
     @Bean
     public FilterRegistrationBean<BasicAuthFilter> basicAuthFilter() {
-        log.info("Registering BasicAuthFilter with user " + basicAuthProperties.getUsername());
+        log.info("Registering BasicAuthFilter with user {}", basicAuthProperties.getUsername());
 
         final FilterRegistrationBean<BasicAuthFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
