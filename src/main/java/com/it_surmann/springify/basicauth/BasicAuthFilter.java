@@ -1,14 +1,14 @@
 package com.it_surmann.springify.basicauth;
 
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.StringTokenizer;
 
 
@@ -18,13 +18,12 @@ import java.util.StringTokenizer;
 @Slf4j
 public class BasicAuthFilter implements Filter {
 
-    private String basicUsername;
-    private String basicPassword;
-    private String basicRealm;
+    private final String basicUsername;
+    private final String basicPassword;
+    private final String basicRealm;
 
-    @Autowired
     public BasicAuthFilter(final String basicUsername, final String basicPassword, final String basicRealm) {
-        if (StringUtils.isEmpty(basicUsername) || StringUtils.isEmpty(basicPassword)) {
+        if (ObjectUtils.isEmpty(basicUsername) || ObjectUtils.isEmpty(basicPassword)) {
             throw new RuntimeException("Missing username or password for basic authentication. Please " +
                     "specify as \"springify.basicauth.username\" and \"springify.basicauth.password\" or " +
                     "disable with \"springify.basicauth.enabled=false\".");
@@ -65,7 +64,8 @@ public class BasicAuthFilter implements Filter {
             return;
         }
 
-        final String authorizationString = new String(Base64.decodeBase64(tokenizer.nextToken()), "UTF-8");
+        final byte[] authorizationBytes = Base64.getDecoder().decode(tokenizer.nextToken());
+        final String authorizationString = new String(authorizationBytes, StandardCharsets.UTF_8);
         final int c = authorizationString.indexOf(":");
         if (c == -1) {
             respond401(httpServletResponse, "Invalid authentication string.");

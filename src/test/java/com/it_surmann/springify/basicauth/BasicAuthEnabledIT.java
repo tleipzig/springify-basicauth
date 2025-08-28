@@ -1,17 +1,16 @@
 package com.it_surmann.springify.basicauth;
 
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.response.ExtractableResponse;
-import com.jayway.restassured.response.Response;
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -19,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
  * HTTP to check the results.
  */
 @Slf4j
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("enabled")
 public class BasicAuthEnabledIT {
@@ -34,19 +32,19 @@ public class BasicAuthEnabledIT {
         ExtractableResponse<Response> response = RestAssured.given()
                 .request().when().get("http://localhost:" + serverPort + "/test.html")
                 .then().extract();
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());
 
         response = RestAssured.given()
-                .authentication().preemptive().basic("basicuser", "wrongpass")
+                .auth().preemptive().basic("basicuser", "wrongpass")
                 .request().when().get("http://localhost:" + serverPort + "/test.html")
                 .then().extract();
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.statusCode());
 
         response = RestAssured.given()
-                .authentication().preemptive().basic("basicuser", "basicpass")
+                .auth().preemptive().basic("basicuser", "basicpass")
                 .request().when().get("http://localhost:" + serverPort + "/test.html")
                 .then().extract();
-        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+        assertEquals(HttpStatus.OK.value(), response.statusCode());
     }
 
 }

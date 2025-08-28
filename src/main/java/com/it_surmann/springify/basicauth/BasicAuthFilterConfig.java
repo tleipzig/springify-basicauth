@@ -1,13 +1,11 @@
 package com.it_surmann.springify.basicauth;
 
+import jakarta.servlet.DispatcherType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.servlet.DispatcherType;
 
 
 /**
@@ -21,7 +19,6 @@ public class BasicAuthFilterConfig {
 
     private BasicAuthProperties basicAuthProperties;
 
-    @Autowired
     public BasicAuthFilterConfig(final BasicAuthProperties basicAuthProperties) {
         this.basicAuthProperties = basicAuthProperties;
     }
